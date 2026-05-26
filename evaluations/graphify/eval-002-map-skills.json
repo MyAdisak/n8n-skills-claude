@@ -1,0 +1,22 @@
+{
+  "id": "graphify-002",
+  "skill": "graphify",
+  "name": "Map n8n-skills Codebase",
+  "description": "Tests that the skill guides building a graph of the skills directory",
+  "query": "How do I visualize how all 7 n8n skills relate to each other?",
+  "expected_behavior": [
+    "Suggest /graphify ./skills command",
+    "Explain the three output files (HTML, Markdown, JSON)",
+    "Mention god nodes concept for finding most-connected skills",
+    "Suggest querying for shared concepts"
+  ],
+  "expected_output_includes": [
+    "/graphify ./skills",
+    "HTML",
+    "query"
+  ],
+  "should_not_include": [
+    "pip install requests",
+    "grep"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "graphify-003",
+  "skill": "graphify",
+  "name": "Query Skill Relationships",
+  "description": "Tests that the skill guides querying the knowledge graph",
+  "query": "How do I find which n8n skills depend on MCP tools?",
+  "expected_behavior": [
+    "Suggest /graphify query command with relevant question",
+    "Explain that graphify surfaces cross-file connections",
+    "Provide example query targeting MCP tools dependency"
+  ],
+  "expected_output_includes": [
+    "/graphify query",
+    "MCP"
+  ],
+  "should_not_include": [
+    "grep -r",
+    "manually search"
+  ]
+}
