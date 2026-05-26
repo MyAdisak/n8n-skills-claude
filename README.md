@@ -130,6 +130,11 @@ Write Python code in n8n Code nodes with proper limitations awareness.
 1. **n8n-mcp MCP server** installed and configured ([Installation Guide](https://github.com/czlonkowski/n8n-mcp))
 2. **Claude Code**, Claude.ai, or Claude API access
 3. `.mcp.json` configured with n8n-mcp server
+4. **graphify** (optional) for workflow visualization:
+   ```bash
+   uv tool install graphifyy   # recommended
+   # or: pipx install graphifyy / pip install graphifyy
+   ```
 
 ### Claude Code
 

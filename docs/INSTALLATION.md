@@ -6,7 +6,20 @@ Complete installation instructions for n8n-skills across all platforms.
 
 ## Prerequisites
 
-### 1. n8n-mcp MCP Server
+### 1. graphify (Optional - Workflow Visualization)
+
+**graphify** is a Python tool for visualizing n8n workflow graphs. Install it with one of:
+
+```bash
+# Recommended (uv puts graphify on PATH automatically):
+uv tool install graphifyy
+
+# Alternatives:
+pipx install graphifyy
+pip install graphifyy
+```
+
+### 2. n8n-mcp MCP Server
 
 You **must** have the n8n-mcp MCP server installed and configured before using these skills.
 

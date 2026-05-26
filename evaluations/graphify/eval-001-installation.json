@@ -1,0 +1,22 @@
+{
+  "id": "graphify-001",
+  "skill": "graphify",
+  "name": "Installation - Basic Setup",
+  "description": "Tests that the skill correctly guides graphify installation",
+  "query": "How do I install graphify for my n8n-skills project?",
+  "expected_behavior": [
+    "Recommend uv tool install graphifyy as the primary method",
+    "Provide pipx and pip as alternatives",
+    "Mention graphify install to register with AI assistant",
+    "Keep instructions concise and actionable"
+  ],
+  "expected_output_includes": [
+    "uv tool install graphifyy",
+    "pipx install graphifyy",
+    "graphify install"
+  ],
+  "should_not_include": [
+    "npm install",
+    "yarn add"
+  ]
+}
