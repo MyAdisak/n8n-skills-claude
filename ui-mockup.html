@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>มนทชัย รีไซเคิล — UI Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d0f1a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+
+  /* Colors */
+  :root {
+    --bg: #0d0f1a;
+    --surface: #161923;
+    --surface2: #1e2235;
+    --border: #2a2f47;
+    --accent: #f59e0b;
+    --accent2: #fbbf24;
+    --green: #10b981;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --text: #e2e8f0;
+    --sub: #64748b;
+    --sub2: #94a3b8;
+  }
+
+  /* Layout */
+  .app { max-width: 430px; margin: 0 auto; position: relative; min-height: 100vh; background: var(--bg); }
+  .screen { display: none; padding: 0 0 80px 0; }
+  .screen.active { display: block; }
+
+  /* Top Bar */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar-title { font-size: 17px; font-weight: 700; color: var(--text); }
+  .topbar-sub { font-size: 12px; color: var(--sub2); margin-top: 1px; }
+  .topbar-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--surface2); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border); font-size: 16px; }
+
+  /* Bottom Nav */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex; padding: 8px 0 20px 0;
+    z-index: 20;
+  }
+  .nav-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+    cursor: pointer; padding: 4px 0; transition: all 0.2s;
+  }
+  .nav-icon { font-size: 22px; line-height: 1; }
+  .nav-label { font-size: 10px; color: var(--sub); font-weight: 500; }
+  .nav-item.active .nav-icon { filter: drop-shadow(0 0 4px var(--accent)); }
+  .nav-item.active .nav-label { color: var(--accent); }
+  .nav-fab {
+    width: 52px; height: 52px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent), #d97706);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; cursor: pointer; margin-top: -20px;
+    box-shadow: 0 4px 20px rgba(245,158,11,0.4);
+    transition: transform 0.2s;
+  }
+  .nav-fab:active { transform: scale(0.95); }
+
+  /* Cards */
+  .section { padding: 16px; }
+  .section-title { font-size: 13px; color: var(--sub2); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .card-row { display: flex; align-items: center; gap: 12px; }
+  .card-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .card-body { flex: 1; }
+  .card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .card-sub { font-size: 12px; color: var(--sub2); margin-top: 2px; }
+  .card-value { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .card-chevron { color: var(--sub); font-size: 18px; }
+
+  /* Stat Grid */
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .stat-label { font-size: 11px; color: var(--sub2); margin-bottom: 6px; }
+  .stat-value { font-size: 22px; font-weight: 800; color: var(--text); }
+  .stat-unit { font-size: 12px; color: var(--sub2); margin-left: 4px; font-weight: 400; }
+  .stat-change { font-size: 11px; margin-top: 4px; }
+  .stat-up { color: var(--green); }
+  .stat-down { color: var(--red); }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, #1e1500, #2d1f00);
+    border: 1px solid #3d2e00;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .banner-icon { font-size: 32px; }
+  .banner-title { font-size: 16px; font-weight: 700; color: var(--accent); }
+  .banner-sub { font-size: 12px; color: #a37a00; margin-top: 2px; }
+  .banner-value { font-size: 28px; font-weight: 800; color: var(--accent2); margin-top: 4px; }
+
+  /* Tag */
+  .tag { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .tag-green { background: rgba(16,185,129,0.15); color: var(--green); }
+  .tag-amber { background: rgba(245,158,11,0.15); color: var(--accent); }
+  .tag-red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .tag-blue { background: rgba(59,130,246,0.15); color: var(--blue); }
+
+  /* List */
+  .list-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer;
+  }
+  .list-item:active { background: var(--surface2); }
+  .list-avatar { width: 42px; height: 42px; border-radius: 12px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .list-body { flex: 1; }
+  .list-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .list-sub { font-size: 12px; color: var(--sub2); margin-top: 2px; }
+  .list-right { text-align: right; }
+  .list-amount { font-size: 15px; font-weight: 700; }
+  .list-date { font-size: 11px; color: var(--sub); margin-top: 2px; }
+
+  /* Form */
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 12px; color: var(--sub2); font-weight: 600; margin-bottom: 6px; display: block; }
+  .form-input {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 14px; color: var(--text); font-size: 15px;
+    outline: none;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .btn {
+    width: 100%; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 700;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), #d97706); color: #000; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+
+  /* Material chips */
+  .chip-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .chip {
+    padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 600;
+    border: 1.5px solid var(--border); background: var(--surface); color: var(--sub2);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .chip.selected { border-color: var(--accent); background: rgba(245,158,11,0.1); color: var(--accent); }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 8px 0 16px 0; }
+
+  /* Receipt preview */
+  .receipt {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden;
+  }
+  .receipt-header { background: linear-gradient(135deg, #1e1500, #2d1f00); padding: 16px; text-align: center; }
+  .receipt-company { font-size: 17px; font-weight: 800; color: var(--accent); }
+  .receipt-sub { font-size: 12px; color: #a37a00; margin-top: 2px; }
+  .receipt-body { padding: 16px; }
+  .receipt-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
+  .receipt-row.total { border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 6px; font-size: 16px; font-weight: 700; color: var(--accent); }
+
+  /* Demo tabs */
+  .demo-tabs { display: flex; gap: 8px; padding: 12px 16px 0; overflow-x: auto; }
+  .demo-tab {
+    padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    white-space: nowrap; cursor: pointer; border: 1.5px solid var(--border);
+    background: var(--surface); color: var(--sub2); transition: all 0.15s;
+  }
+  .demo-tab.active { border-color: var(--accent); background: rgba(245,158,11,0.1); color: var(--accent); }
+
+  /* Desktop layout */
+  @media (min-width: 768px) {
+    body { background: #080b14; }
+    .app { max-width: 100%; display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+    .bottom-nav { display: none; }
+    .sidebar {
+      background: var(--surface); border-right: 1px solid var(--border);
+      padding: 24px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    }
+    .sidebar-logo { padding: 0 20px 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+    .sidebar-logo-title { font-size: 15px; font-weight: 800; color: var(--accent); }
+    .sidebar-logo-sub { font-size: 11px; color: var(--sub); }
+    .sidebar-nav-item {
+      display: flex; align-items: center; gap: 10px; padding: 11px 20px;
+      cursor: pointer; transition: all 0.15s; border-radius: 0; font-size: 14px;
+      color: var(--sub2); font-weight: 500;
+    }
+    .sidebar-nav-item:hover { background: var(--surface2); color: var(--text); }
+    .sidebar-nav-item.active { background: rgba(245,158,11,0.1); color: var(--accent); border-right: 3px solid var(--accent); }
+    .sidebar-nav-icon { font-size: 18px; width: 24px; text-align: center; }
+    .main-content { overflow-y: auto; }
+    .screen { padding: 0 0 24px 0; }
+    .screen.active { display: block; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR (Desktop) -->
+  <div class="sidebar" style="display:none" id="sidebar">
+    <div class="sidebar-logo">
+      <div style="font-size:24px;margin-bottom:6px;">♻️</div>
+      <div class="sidebar-logo-title">มนทชัย รีไซเคิล</div>
+      <div class="sidebar-logo-sub">ระบบจัดการธุรกิจ</div>
+    </div>
+    <div class="sidebar-nav-item active" onclick="showScreen('dashboard')"><span class="sidebar-nav-icon">📊</span> Dashboard</div>
+    <div class="sidebar-nav-item" onclick="showScreen('buy')"><span class="sidebar-nav-icon">⬇️</span> รับซื้อของเข้า</div>
+    <div class="sidebar-nav-item" onclick="showScreen('sell')"><span class="sidebar-nav-icon">⬆️</span> ขายของออก</div>
+    <div class="sidebar-nav-item" onclick="showScreen('docs')"><span class="sidebar-nav-icon">📄</span> เอกสาร</div>
+    <div class="sidebar-nav-item" onclick="showScreen('jobs')"><span class="sidebar-nav-icon">🔧</span> งานรื้อถอน</div>
+    <div class="sidebar-nav-item" onclick="showScreen('hr')"><span class="sidebar-nav-icon">👥</span> HR</div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- SCREEN: DASHBOARD -->
+    <div class="screen active" id="screen-dashboard">
+      <div class="topbar">
+        <div><div class="topbar-title">♻️ มนทชัย รีไซเคิล</div><div class="topbar-sub">27 พ.ค. 2569</div></div>
+        <div class="topbar-icon">🔔</div>
+      </div>
+      <div class="section">
+        <div class="banner">
+          <div class="banner-icon">💰</div>
+          <div>
+            <div class="banner-title">รายได้วันนี้</div>
+            <div class="banner-sub">รับซื้อ 3 รายการ · ขาย 1 รายการ</div>
+            <div class="banner-value">฿ 12,450</div>
+          </div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">รับซื้อวันนี้</div>
+            <div class="stat-value">฿8,200</div>
+            <div class="stat-change stat-up">↑ 12% vs เมื่อวาน</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">ขายออกวันนี้</div>
+            <div class="stat-value">฿4,250</div>
+            <div class="stat-change stat-down">↓ 5% vs เมื่อวาน</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">น้ำหนักรับซื้อ</div>
+            <div class="stat-value">342<span class="stat-unit">กก.</span></div>
+            <div class="stat-change stat-up">↑ 3 รายการ</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">งานรื้อถอน</div>
+            <div class="stat-value">2</div>
+            <div class="stat-change" style="color:var(--accent)">กำลังดำเนินการ</div>
+          </div>
+        </div>
+        <div class="section-title">รายการล่าสุด</div>
+        <div class="list-item">
+          <div class="list-avatar" style="background:rgba(16,185,129,0.15)">⬇️</div>
+          <div class="list-body">
+            <div class="list-title">รับซื้อเหล็ก</div>
+            <div class="list-sub">นายสมชาย · 120 กก.</div>
+          </div>
+          <div class="list-right">
+            <div class="list-amount" style="color:var(--green)">+฿2,400</div>
+            <div class="list-date">09:32</div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-avatar" style="background:rgba(245,158,11,0.15)">⬆️</div>
+          <div class="list-body">
+            <div class="list-title">ขายทองแดง</div>
+            <div class="list-sub">บ.เมทัลไทย · 45 กก.</div>
+          </div>
+          <div class="list-right">
+            <div class="list-amount" style="color:var(--accent)">+฿4,250</div>
+            <div class="list-date">10:15</div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-avatar" style="background:rgba(59,130,246,0.15)">🔧</div>
+          <div class="list-body">
+            <div class="list-title">รื้อถอนเครื่องปั๊ม</div>
+            <div class="list-sub">โรงงานอรุณ · Job#024</div>
+          </div>
+          <div class="list-right">
+            <div class="list-amount" style="color:var(--blue)">฿15,000</div>
+            <div class="list-date">08:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN: BUY -->
+    <div class="screen" id="screen-buy">
+      <div class="topbar">
+        <div><div class="topbar-title">⬇️ รับซื้อของเข้า</div></div>
+        <div class="topbar-icon">📋</div>
+      </div>
+      <div class="demo-tabs">
+        <div class="demo-tab active">+ บันทึกใหม่</div>
+        <div class="demo-tab">ประวัติ</div>
+        <div class="demo-tab">ราคาวันนี้</div>
+      </div>
+      <div class="section">
+        <div class="section-title">ประเภทวัสดุ</div>
+        <div class="chip-grid">
+          <div class="chip selected">🔩 เหล็ก</div>
+          <div class="chip">⚡ ทองแดง</div>
+          <div class="chip">🥈 อลูมิเนียม</div>
+          <div class="chip">🔋 แบตเตอรี่</div>
+          <div class="chip">📱 อิเล็กฯ</div>
+          <div class="chip">+ อื่นๆ</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ชื่อผู้ขาย</label>
+          <input class="form-input" placeholder="ชื่อ-นามสกุล หรือชื่อร้าน" readonly>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">น้ำหนัก (กก.)</label>
+            <input class="form-input" placeholder="0.00" type="number" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ราคา/กก. (฿)</label>
+            <input class="form-input" placeholder="18.00" type="number" readonly>
+          </div>
+        </div>
+        <div class="card" style="background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.3)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="color:var(--sub2);font-size:14px">ยอดรวม</span>
+            <span style="font-size:26px;font-weight:800;color:var(--accent)">฿ 2,160</span>
+          </div>
+          <div style="font-size:12px;color:var(--sub);margin-top:4px">120 กก. × 18 บาท/กก.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">หมายเหตุ</label>
+          <input class="form-input" placeholder="(ไม่บังคับ)" readonly>
+        </div>
+        <button class="btn btn-primary">✓ บันทึกการรับซื้อ</button>
+      </div>
+    </div>
+
+    <!-- SCREEN: SELL -->
+    <div class="screen" id="screen-sell">
+      <div class="topbar">
+        <div><div class="topbar-title">⬆️ ขายของออก</div></div>
+        <div class="topbar-icon">📋</div>
+      </div>
+      <div class="demo-tabs">
+        <div class="demo-tab active">+ สร้างรายการขาย</div>
+        <div class="demo-tab">ประวัติการขาย</div>
+      </div>
+      <div class="section">
+        <div class="form-group">
+          <label class="form-label">ลูกค้า</label>
+          <input class="form-input" placeholder="ชื่อบริษัท/ร้านค้า" readonly>
+        </div>
+        <div class="section-title">รายการที่ขาย</div>
+        <div class="list-item">
+          <div class="list-avatar" style="background:rgba(245,158,11,0.15)">⚡</div>
+          <div class="list-body">
+            <div class="list-title">ทองแดง</div>
+            <div class="list-sub">45 กก. × 95 ฿/กก.</div>
+          </div>
+          <div class="list-right">
+            <div class="list-amount" style="color:var(--accent)">฿4,275</div>
+          </div>
+        </div>
+        <div class="list-item" style="border-style:dashed;justify-content:center;color:var(--sub2);font-size:14px">
+          + เพิ่มรายการ
+        </div>
+        <div class="divider"></div>
+        <div class="card" style="background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.3)">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="color:var(--sub2);font-size:13px">ราคารวม</span>
+            <span style="font-weight:700">฿4,275</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="color:var(--sub2);font-size:13px">ภาษี 7%</span>
+            <span style="font-weight:700">฿299</span>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="color:var(--accent);font-weight:700">ยอดสุทธิ</span>
+            <span style="font-size:22px;font-weight:800;color:var(--accent)">฿4,574</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <button class="btn btn-ghost" style="font-size:14px">📄 ออกใบเสร็จ</button>
+          <button class="btn btn-primary" style="font-size:14px">✓ ยืนยันการขาย</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN: DOCS -->
+    <div class="screen" id="screen-docs">
+      <div class="topbar">
+        <div><div class="topbar-title">📄 เอกสาร</div></div>
+        <div class="topbar-icon">+</div>
+      </div>
+      <div class="demo-tabs">
+        <div class="demo-tab active">ใบเสนอราคา</div>
+        <div class="demo-tab">ใบเสร็จ</div>
+        <div class="demo-tab">ใบส่งของ</div>
+      </div>
+      <div class="section">
+        <div class="receipt">
+          <div class="receipt-header">
+            <div style="font-size:20px;margin-bottom:6px">♻️</div>
+            <div class="receipt-company">มนทชัย รีไซเคิล</div>
+            <div class="receipt-sub">เลขที่ QT-2026-0042 · 27/05/2569</div>
+          </div>
+          <div class="receipt-body">
+            <div style="margin-bottom:12px">
+              <div style="font-size:12px;color:var(--sub2)">เสนอราคาให้</div>
+              <div style="font-weight:600;margin-top:2px">บริษัท โรงงานอรุณ จำกัด</div>
+            </div>
+            <div style="font-size:12px;color:var(--sub2);margin-bottom:8px">รายการ</div>
+            <div class="receipt-row"><span>รื้อถอนเครื่องปั๊มน้ำ</span><span>฿12,000</span></div>
+            <div class="receipt-row"><span>ค่าแรง + ขนส่ง</span><span>฿3,000</span></div>
+            <div class="receipt-row"><span>วัสดุ</span><span>฿500</span></div>
+            <div class="receipt-row total"><span>ยอดรวม</span><span>฿15,500</span></div>
+          </div>
+          <div style="padding:0 16px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <button class="btn btn-ghost" style="font-size:13px;padding:10px">📤 แชร์</button>
+            <button class="btn btn-primary" style="font-size:13px;padding:10px">⬇️ PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN: JOBS -->
+    <div class="screen" id="screen-jobs">
+      <div class="topbar">
+        <div><div class="topbar-title">🔧 งานรื้อถอน</div></div>
+        <div class="topbar-icon">+</div>
+      </div>
+      <div class="section">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">งานเดือนนี้</div>
+            <div class="stat-value">5</div>
+            <div class="stat-change stat-up">↑ 2 vs เดือนก่อน</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">กำไรรวม</div>
+            <div class="stat-value">฿42k</div>
+            <div class="stat-change stat-up">↑ 18%</div>
+          </div>
+        </div>
+        <div class="section-title">งานที่กำลังทำ</div>
+        <div class="list-item">
+          <div class="list-avatar" style="background:rgba(59,130,246,0.15)">🏭</div>
+          <div class="list-body">
+            <div class="list-title">รื้อถอนเครื่องปั๊ม</div>
+            <div class="list-sub">โรงงานอรุณ · Job#024</div>
+            <div style="margin-top:6px">
+              <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+                <div style="height:100%;width:60%;background:var(--accent);border-radius:2px"></div>
+              </div>
+              <div style="font-size:10px;color:var(--sub2);margin-top:3px">60% เสร็จแล้ว</div>
+            </div>
+          </div>
+          <div class="list-right">
+            <div class="list-amount" style="color:var(--blue)">฿15,000</div>
+            <div><span class="tag tag-amber">กำลังทำ</span></div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-avatar" style="background:rgba(16,185,129,0.15)">🔌</div>
+          <div class="list-body">
+            <div class="list-title">ถอดระบบไฟฟ้า</div>
+            <div class="list-sub">บ.เอไอเอ · Job#023</div>
+            <div style="margin-top:6px">
+              <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+                <div style="height:100%;width:100%;background:var(--green);border-radius:2px"></div>
+              </div>
+              <div style="font-size:10px;color:var(--green);margin-top:3px">เสร็จแล้ว ✓</div>
+            </div>
+          </div>
+          <div class="list-right">
+            <div class="list-amount" style="color:var(--green)">฿8,500</div>
+            <div><span class="tag tag-green">เสร็จแล้ว</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN: HR -->
+    <div class="screen" id="screen-hr">
+      <div class="topbar">
+        <div><div class="topbar-title">👥 HR</div><div class="topbar-sub">18 พนักงาน</div></div>
+        <div class="topbar-icon">+</div>
+      </div>
+      <div class="demo-tabs">
+        <div class="demo-tab active">พนักงาน</div>
+        <div class="demo-tab">เข้างาน</div>
+        <div class="demo-tab">การลา</div>
+        <div class="demo-tab">เงินเดือน</div>
+      </div>
+      <div class="section">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">เข้างานวันนี้</div>
+            <div class="stat-value">15<span class="stat-unit">/ 18</span></div>
+            <div class="stat-change stat-up">↑ ปกติ</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">ลาวันนี้</div>
+            <div class="stat-value">3</div>
+            <div class="stat-change" style="color:var(--accent)">รออนุมัติ 1</div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-avatar" style="background:rgba(245,158,11,0.15);font-size:22px">👨</div>
+          <div class="list-body">
+            <div class="list-title">สมชาย ใจดี</div>
+            <div class="list-sub">EMP001 · ฝ่ายผลิต</div>
+          </div>
+          <div class="list-right">
+            <span class="tag tag-green">เข้างานแล้ว</span>
+            <div class="list-date">08:02</div>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-avatar" style="background:rgba(59,130,246,0.15);font-size:22px">👩</div>
+          <div class="list-body">
+            <div class="list-title">สมหญิง สุขใจ</div>
+            <div class="list-sub">EMP002 · ฝ่ายบัญชี</div>
+          </div>
+          <div class="list-right">
+            <span class="tag tag-red">ลาป่วย</span>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-avatar" style="background:rgba(16,185,129,0.15);font-size:22px">👨</div>
+          <div class="list-body">
+            <div class="list-title">วิชัย แสนดี</div>
+            <div class="list-sub">EMP003 · ฝ่ายผลิต</div>
+          </div>
+          <div class="list-right">
+            <span class="tag tag-green">เข้างานแล้ว</span>
+            <div class="list-date">07:55</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end main-content -->
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item active" id="nav-dashboard" onclick="showScreen('dashboard')">
+      <div class="nav-icon">📊</div>
+      <div class="nav-label">หน้าหลัก</div>
+    </div>
+    <div class="nav-item" id="nav-buy" onclick="showScreen('buy')">
+      <div class="nav-icon">⬇️</div>
+      <div class="nav-label">รับซื้อ</div>
+    </div>
+    <div class="nav-fab" onclick="showScreen('buy')">➕</div>
+    <div class="nav-item" id="nav-sell" onclick="showScreen('sell')">
+      <div class="nav-icon">⬆️</div>
+      <div class="nav-label">ขาย</div>
+    </div>
+    <div class="nav-item" id="nav-more" onclick="showScreen('hr')">
+      <div class="nav-icon">☰</div>
+      <div class="nav-label">เพิ่มเติม</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Responsive sidebar
+function checkLayout() {
+  const sidebar = document.getElementById('sidebar');
+  if (window.innerWidth >= 768) {
+    sidebar.style.display = 'block';
+  } else {
+    sidebar.style.display = 'none';
+  }
+}
+checkLayout();
+window.addEventListener('resize', checkLayout);
+
+// Screen switching
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+
+  document.querySelectorAll('.sidebar-nav-item').forEach(n => n.classList.remove('active'));
+  const sideEl = Array.from(document.querySelectorAll('.sidebar-nav-item')).find(el => el.getAttribute('onclick')?.includes(name));
+  if (sideEl) sideEl.classList.add('active');
+
+  window.scrollTo(0, 0);
+}
+
+// Chip toggle demo
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    chip.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+  });
+});
+
+// Demo tab toggle
+document.querySelectorAll('.demo-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    tab.parentElement.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
