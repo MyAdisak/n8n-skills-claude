@@ -125,7 +125,7 @@ In a new conversation, type:
 "List my active skills"
 ```
 
-You should see all 5 n8n skills listed.
+You should see all 7 n8n skills listed.
 
 ---
 
@@ -147,7 +147,7 @@ const skillsDir = './skills';
 const skills = loadSkillsFromDirectory(skillsDir);
 
 const response = await client.messages.create({
-  model: 'claude-sonnet-4-5-20250929',
+  model: 'claude-sonnet-4-6',
   messages: [{
     role: 'user',
     content: 'Build a webhook to Slack workflow'
@@ -209,7 +209,7 @@ Webhook data is under $json.body...
 Ask Claude: "Build and validate a webhook to Slack workflow"
 ```
 
-Expected: All 5 skills should activate and work together.
+Expected: All 7 skills should activate and work together.
 
 ---
 
